@@ -102,6 +102,12 @@ module Resque
         end
       end
 
+      def deliver_to(my_queue)
+        if @mailer_class.deliver?
+          resque.enqueue_to(my_queue, @mailer_class, @method_name, *@args)
+        end
+      end      
+
       def deliver!
         actual_message.deliver!
       end
